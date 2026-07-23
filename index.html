@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Book List Sorter</title>
+    <script>
+        class Book {
+            constructor(Month,Title, Author, Category, Audience, PublishYear, url="") {
+                this.Month = Month;
+                this.Title = Title;
+                this.Author = Author;
+                this.Category = Category;
+                this.Audience = Audience;
+                this.PublishYear = PublishYear;
+                this.URL = url;
+            }
+        }
+        //Map or <year>, <array of books>
+        this.Books = new Map([
+            2024, new Array(
+    new Book("Jan 24", "Tegan and Sarah: Junior High", "Tegan & Sarah Quin, Tillie Walden", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/0374313024.jpg?v=1751038977"),
+    new Book("Jan 24", "Ember and the Island of the Lost Creatures", "Jason Pamment", "Graphic Novel", "gr 3-7", "2023", "https://www.worldofbooks.com/cdn/shop/files/0063065207.jpg?v=1751036769"),
+    new Book("Jan 24", "A Sky of Paper Stars", "Susie Yi", "Graphic Novel", "gr 4-6", "2023", "https://www.worldofbooks.com/cdn/shop/files/1250843898.jpg?v=1750792713&width=493"),
+    new Book("Jan 24", "We are Not Strangers", "Josh Tuininga", "Graphic Novel", "AD", "2023", "https://www.worldofbooks.com/cdn/shop/files/1419759949.jpg?v=1751434312&width=400"),
+    new Book("Jan 24", "Atana and the Firebird", "Vivian Zhou", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/0063075911.jpg?v=1751323014&width=493"),
+    new Book("Jan 24", "Impossible People", "Julia Wertz", "Graphic Nonfiction", "AD", "2023", "https://www.worldofbooks.com/cdn/shop/files/0762468254.jpg?v=1751440299&width=493"),
+    new Book("Jan 24", "Hideout", "Watt Key", "Prose Novel", "", "2017", "https://m.media-amazon.com/images/I/A1GErcFPllL._AC_UF1000,1000_QL80_.jpg"),
+
+    new Book("Feb 24", "Shubeik Lubeik", "Deena Mohamed", "Graphic Novel", "AD", "2023", "https://www.worldofbooks.com/cdn/shop/files/1524748412.jpg?v=1751244449&width=400"),
+    new Book("Feb 24", "Odder", "Katherine Applegate", "Verse Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/9781250423429.jpg?v=1776128900&width=493"),
+    new Book("Feb 24", "The Moth Keeper", "K. O'Neill", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/059318226X.jpg?v=1751327016&width=493"),
+    new Book("Feb 24", "Glass Town", "Isabel Greenberg", "Graphic Novel", "AD", "2020", "https://www.worldofbooks.com/cdn/shop/files/1419732684.jpg?v=1751083801&width=400"),
+    new Book("Feb 24", "The Hospital Suite", "John Porcellino", "Graphic Nonfiction", "AD", "2023", "https://the-comics-journal.sfo3.digitaloceanspaces.com/wp-content/uploads/2014/09/JohnP-HospitalSuite-coverWB.jpg"),
+    new Book("Feb 24", "White Smoke", "Tiffany D. Jackson", "Prose Novel", "YA", "2023", "https://m.media-amazon.com/images/I/71wWtmDP9qL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Feb 24", "Ephemera", "Briana Loewinsohn", "Graphic Nonfiction", "AD", "2023", "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1687452763i/61363163.jpg"),
+    new Book("Feb 24", "One Dark Window", "Rachel Gillig", "Prose Novel", "AD", "2023", "https://m.media-amazon.com/images/I/91Q2cSzblxL._AC_UF1000,1000_QL80_.jpg"),
+
+    new Book("Mar 24", "Squished", "Megan Wagner Lloyd", "Graphic Novel", "", "2023", "https://m.media-amazon.com/images/I/71YA3khcssL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Mar 24", "Two Twisted Crowns", "Rachel Gillig", "Prose Novel", "AD", "2023", "https://m.media-amazon.com/images/I/91dXV0mGS3L._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Mar 24", "Ducks", "Kate Beaton", "Graphic Nonfiction", "AD", "2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZaB0vWqTS3l_3S4IHdsDi5NCJEboiINuz_D6QDtXB6x_1pT1oyXyJV-8&s=10"),
+    new Book("Mar 24", "Pedro and Me", "Judd Winick", "Graphic Nonfiction", "YA", "2023", "https://mpd-biblio-covers.imgix.net/9780805089646.jpg"),
+    new Book("Mar 24", "Attack of the Black Rectangles", "A.S. King", "Prose Novel", "", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3rKJnmp_BlHtANc9KmVhQfb8PF0l37BMSxLnTw6HD8A&s"),
+    new Book("Mar 24", "Brooms", "Jasmine Walls and Teo DuVall", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTskHwvcwnrHl-JlDhKeQhDPEYBEBtaR16ztgKfxeSfTIE9ABdc_6KmWaUx&s=10"),
+    new Book("Mar 24", "Dear Rosie", "Meghan Boehman and Rachael Briner", "Graphic Novel", "", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXEtnmaYmXecdvXpTINwz4LxgqLiszQTJbsdaPF7MT6gd5q6bY-XOcxT6p&s=10"),
+
+    new Book("Apr 24", "Parachute Kids", "Betty C. Tang", "Graphic Novel", "", "2023", "https://m.media-amazon.com/images/I/81bjwkLDzWL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Apr 24", "Seek You", "Kristen Radtke", "Graphic Nonfiction", "AD", "2021", "https://images.penguinrandomhouse.com/cover/9781524748067"),
+    new Book("Apr 24", "A Work in Progress", "Jarrett Lerner", "Graphic Novel", "", "2023", "https://m.media-amazon.com/images/I/81iDzsNldTL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Apr 24", "Be That Way", "Hope Larson", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ncrnce1l6R-TCk-cMn3ftmIdDnNJn9fEiG9PB4mO-QWpukBvQWylJH2N&s=10"),
+    new Book("Apr 24", "Paper Planes", "Jennie Wood", "Graphic Novel", "YA", "2023", "https://m.media-amazon.com/images/I/71DmUh+BeeL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Apr 24", "If You'll Have Me", "Eunnie", "Graphic Novel", "YA", "2023", "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1748858273i/83817463.jpg"),
+    new Book("Apr 24", "The Princess and the Grilled Cheese Sandwich", "Deya Muniz", "Graphic Novel", "YA", "2023", "https://m.media-amazon.com/images/I/81HDU7MWUoL._AC_UF1000,1000_QL80_AIweblab1381794,T1_.jpg"),
+
+    new Book("May 24", "The Labors of Hercules Beal", "Gary D. Schmidt", "Prose Novel", "", "2023", "https://www.harpercollins.com/cdn/shop/files/9780358659570_4814fa1c-5011-4059-8522-633c87b52241_1200x1200.jpg?v=1784390149"),
+    new Book("May 24", "Out of my Mind", "Sharon M. Draper", "Prose Novel", "", "2023", "https://m.media-amazon.com/images/I/51amCmcmlOL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("May 24", "Frontera", "Julio Anta", "Graphic Novel", "YA", "2023", "https://m.media-amazon.com/images/I/81A0vW3H7WL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("May 24", "The Hills of Estrella Roja", "Ashley Robin Franklin", "Graphic Novel", "YA", "2023", "https://www.harpercollins.com/cdn/shop/files/9780358567028_e4c5a0be-6fb0-469b-87c4-9a47baf87894.jpg?v=1781702161&width=350"),
+    new Book("May 24", "Mapmakers and the Lost Magic", "Cameron Chittock", "Graphic Novel", "", "2022", "https://m.media-amazon.com/images/I/81MdGE+B3sL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("May 24", "Call me Iggy", "Jorge Augusto Aguirre", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwmPgmapiOVg8dBTodG1xg7UZFBwhcpDhBWyI8eKJ44fTe2rPj_g0Y8n4&s=10"),
+    new Book("May 24", "The Sea in You", "Jessica Sheron", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ885dRW6FwKhWXvcly-dW0Gp4-pISCCq1NlkM7ROAOQ&s"),
+
+    new Book("Jun 24", "Daisy Jones and the Six", "Taylor Lynn Reade", "Prose Novel", "AD", "", "https://m.media-amazon.com/images/I/818B6S6B-bL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jun 24", "Keeping Two", "Jordan Crane", "Graphic Novel", "AD", "2022", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4cTzgJHMR3zL0FkvY41Jv_BOF1_smbaD5vqJ1ShAjtpXAmQ8zQ0QhE2I&s=10"),
+    new Book("Jun 24", "¡Ay, Mija!", "Christine Suggs", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4ylXktJ3wqY-xP0T9DTQweTYZaA0SnhUOPuMJQWsbSt1UuSYEHHJ6Iw&s=10"),
+    new Book("Jun 24", "Mexikid", "Pedro Martín", "Graphic Nonfiction", "", "2023", "https://images.penguinrandomhouse.com/cover/9780593462287"),
+    new Book("Jun 24", "On the Books", "Greg Farrell", "Graphic Nonfiction", "AD", "2023", "https://m.media-amazon.com/images/I/81WbD+CLKiL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jun 24", "Rosalie Lightning", "Tom Hart", "Graphic Nonfiction", "AD", "2023", "https://m.media-amazon.com/images/I/A1l2pMA1-aL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jun 24", "Basil and Oregano", "Melissa Capriglione", "Graphic Novel", "YA", "2023", "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1684780621i/59385412.jpg"),
+
+    new Book("Jul 24", "Only This Beautiful Moment", "Abdi Nazemian", "Prose Novel", "YA", "2023", "https://m.media-amazon.com/images/I/81frSVjg03L._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jul 24", "The Fire, the Water, and Maudie McGinn", "Sally J. Pla", "Prose Novel", "", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQarxmceELdVneul-PYUbf23j1RpaXWqvSFps8hfLCuNQ&s=10"),
+    new Book("Jul 24", "Pearl of the Sea", "Anthony Silverston, Raffaella Delle Donne, Willem Samuel", "Graphic Novel", "", "2023", "https://m.media-amazon.com/images/I/71y9TwVEwTL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jul 24", "Two Tribes", "Emily Bowen Cohen", "Graphic Novel", "", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgsq_4mKyq0B_uMC4iSgv-tohmo0jz1-x5dy6o6aWfUmmmgKHuoTVjPk0&s=10"),
+    new Book("Jul 24", "Family Lore", "Elizabeth Acevedo", "Prose Novel", "AD", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_xCRHkfUIhOPHO4PYZfs96iADt88nX4ljLVDfvskqHtdqD49U15RlWyc&s=10"),
+    new Book("Jul 24", "Roaming", "Jillian & Mariko Tamaki", "Graphic Novel", "YA", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAeJm9EENssLFMDnnz9RZrus0KGlCeLJyhOLHn3Xvb-cAd7uvIGTYpJLRT&s=10"),
+    new Book("Jul 24", "Forever is Now", "Mariama J. Lockington", "Verse Novel", "YA", "2023", "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1673264751i/61418420.jpg"),
+    new Book("Jul 24", "Ghost Roast", "Shawneé & Shawnelle Gibbs, Emily Cannon", "Graphic Novel", "YA", "2024", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSOEsctT8x7T96sPKGD6H69gpxh3kDiEvvITtd7HGH6xCnz0gW9VavDLyZ&s=10"),
+    new Book("Jul 24", "Good Different", "Meg Eden Kuyatt", "Verse Novel", "", "2023", "https://m.media-amazon.com/images/I/81KmKl3ManL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Jul 24", "Remarkably Bright Creatures", "Shelby Van Pelt", "Prose Novel", "AD", "2023", "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1638033318i/59710157.jpg"),
+
+    new Book("Aug 24", "America the Beautiful?", "Blythe Roberson", "Prose Nonfiction", "AD", "2023", "https://m.media-amazon.com/images/I/81bxtzXYw6L._AC_UF1000,1000_QL80_.jpg"),
+
+    new Book("Sep 24", "Treasure in the Lake", "Jason Pamment", "Graphic Novel", "", "2021", "https://m.media-amazon.com/images/I/81iP5qCw2cL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Sep 24", "Ink Girls", "Marieke Nijkamp", "Graphic Novel", "", "2023", "https://m.media-amazon.com/images/I/911wnq5Hk9L._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Sep 24", "This Country", "Navied Mahdavian", "Graphic Nonfiction", "AD", "2023", "https://m.media-amazon.com/images/I/81baw4l5tPL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Sep 24", "Spirited: Day of the Living Liv", "Liv Livingston", "Graphic Novel", "", "2024", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXc74qzACVMiaT6r92bJL1EiFMiQjn8RzaUcgaVPK33IWDJS-dLvSMbFM&s=10"),
+
+    new Book("Oct 24", "Plain Jane and the Mermaid", "Vera Brosgol", "Graphic Novel", "", "2024", "https://m.media-amazon.com/images/I/81ua7Riq-TL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Oct 24", "Wires Crossed", "Beth Fantaskey", "Graphic Novel", "", "2024", "https://m.media-amazon.com/images/I/81a8-OuXFtL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Oct 24", "But You Have Friends", "Emilia McKenzie", "Graphic Nonfiction", "AD", "2023", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HD8OdwlCFHtUzB9yGAHRMKFDbD56A2drCZvty-sZettrgAyCdhJ5EQG8&s=10"),
+    new Book("Oct 24", "The Sleepover", "Michael Regina", "Graphic Novel", "", "2021", "https://images.penguinrandomhouse.com/cover/9780593117361"),
+    new Book("Oct 24", "Ash's Cabin", "Jen Wang", "Graphic Novel", "", "2024", "https://m.media-amazon.com/images/I/91GIJWHq-dL._AC_UF1000,1000_QL80_.jpg"),
+
+    new Book("Nov 24", "West With Giraffes", "Lynda Rutledge", "Prose Novel", "AD", "2021", "https://m.media-amazon.com/images/I/71cUZPMh6EL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Nov 24", "Summer Vamp", "Violet Chan Karim", "Graphic Novel", "", "2024", "https://images.penguinrandomhouse.com/cover/9780593425237"),
+    new Book("Nov 24", "Lunar New Year Love Story", "Gene Luen Yang and LeUyen Pham", "Graphic Novel", "YA", "2024", "https://mpd-biblio-covers.imgix.net/9781250908261.jpg"),
+    new Book("Nov 24", "Layers", "Penelope Bagieu", "Graphic Nonfiction", "YA", "2021", "https://m.media-amazon.com/images/I/91qF-SL4oBL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Nov 24", "The Bounty Hunter and the Tea Brewer", "Faith Erin Hicks", "Graphic Novel", "", "2024", "https://m.media-amazon.com/images/I/81Li6T53q1L._UF1000,1000_QL80_.jpg"),
+    new Book("Nov 24", "The Riverman", "Aaron Starmer", "Prose Novel", "", "2014", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1glVNcgBamIF0Eot4N60uvksFKNpxEOdeCyz37uKeNQ&s"),
+    new Book("Nov 24", "The Whisper", "Aaron Starmer", "Prose Novel", "", "2015", "https://m.media-amazon.com/images/I/81bsGWpdHUL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Nov 24", "The Deep Dark", "Molly Knox Ostertag", "Graphic Novel", "YA", "2024", "https://m.media-amazon.com/images/I/91QB3LncgLL._UF1000,1000_QL80_.jpg"),
+
+    new Book("Dec 24", "I Must Betray You", "Ruta Sepetys", "Prose Novel", "YA", "2022", "https://m.media-amazon.com/images/I/81fIpXaJuVL._AC_UF1000,1000_QL80_.jpg"),
+    new Book("Dec 24", "The Storyteller", "Aaron Starmer", "Prose Novel", "", "2016", "https://m.media-amazon.com/images/I/91pcp38rCkL._AC_UF1000,1000_QL80_.jpg")
+)
+        ]);
+    </script>
+</head>
+<body style="text-align: center;">
+    <header>
+        <h1>Book List Sorter</h1>
+        <p>Welcome to the Book List Sorter!</p>
+    </header>
+    <main>
+
+    </main>
+</body>
+</html>
