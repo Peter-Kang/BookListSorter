@@ -35,6 +35,7 @@
   .book__wrap {
     position: relative;
     width: 250px;
+    margin: 5px;
   }
 
   .book__description_layer {
@@ -201,18 +202,24 @@
         });
         customElements.define('book-card', BookCard);
 });
-        
     </script>
 </head>
+<style>
+    .grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-flow: dense;
+}
+</style>
 <body style="text-align: center;">
     <header>
         <h1>Book List Sorter</h1>
         <p>Welcome to the Book List Sorter!</p>
     </header>
     <main>
-        <div id="BookListContainer">
+        <div>
             <div id="BookListYearSelector"></div>
-            <div id="BooksListDisplay"></div>
+            <div id="BooksListDisplay" class="grid-container"></div>
         </div>
     </main>
 </body>
