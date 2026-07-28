@@ -2,6 +2,82 @@
 <head>
     <title>Book List Sorter</title>
     <script>
+        class BookCard extends HTMLElement{
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+            connectedCallback(){
+                this.updateContent();
+            }
+            static get observedAttributes(){
+                return ['month', 'title', 'author', 'category', 'audience', 'publishyear', 'url'];
+            }
+            attributeChangedCallback(name, oldValue, newValue){
+                this.updateContent();
+            }
+            updateContent(){
+                this.shadowRoot.innerHTML = `
+                    <style>
+  .book__wrap:hover .book__description_layer {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .book__description {
+    transition: .2s;
+  }
+
+  .book__wrap:hover .book__description {
+    transform: translateY(0);
+  }
+
+  .book__wrap {
+    position: relative;
+    width: 250px;
+  }
+
+  .book__description_layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: black;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* transition effect. not necessary */
+    transition: opacity .15s, visibility .2s;
+    height: 100%;
+    width: 100%;
+    border: 2px solid blue;
+  }
+
+.book__img{
+  width:100%
+}
+  .book__wrap:hover .book__img, 
+  .book__wrap:focus .book__img 
+{
+    -webkit-filter: blur(20px);
+    filter: blur(20px);
+}
+                    </style>
+
+<div class="book__wrap">
+      <img class="book__img" src="${this.getAttribute('url')}" />
+      <div class="book__description_layer">
+        <div class="book__description">
+          <p><b>${this.getAttribute('title')}</b></p>
+          <p>${this.getAttribute('author')}</p>
+        </div>
+      </div>
+    </div>`;
+            }
+        }
         class Book {
             constructor(Month,Title, Author, Category, Audience, PublishYear, url="") {
                 this.Month = Month;
@@ -108,7 +184,24 @@
             ]
         ]);
         this.DisplayBooks = [];
-            console.log(this.Books);
+        window.addEventListener('DOMContentLoaded', () => {
+ this.Books.get(2024).forEach((x) => {
+            this.DisplayBooks.push(x);
+        });
+        this.DisplayBooks.forEach((book) => {
+            const bookCard = document.createElement('book-card');
+            bookCard.setAttribute('month', book.Month);
+            bookCard.setAttribute('title', book.Title);
+            bookCard.setAttribute('author', book.Author);
+            bookCard.setAttribute('category', book.Category);
+            bookCard.setAttribute('audience', book.Audience);
+            bookCard.setAttribute('publishyear', book.PublishYear);
+            bookCard.setAttribute('url', book.URL);
+            document.getElementById('BooksListDisplay').appendChild(bookCard);
+        });
+        customElements.define('book-card', BookCard);
+});
+        
     </script>
 </head>
 <body style="text-align: center;">
