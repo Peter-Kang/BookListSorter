@@ -96,9 +96,7 @@ break-inside: avoid;
             }
         }
         //Map or <year>, <array of books>
-        this.Books = new Map([
-            [
-                2024, [
+        this.Books = [
     new Book("Jan 24", "Tegan and Sarah: Junior High", "Tegan & Sarah Quin, Tillie Walden", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/0374313024.jpg?v=1751038977"),
     new Book("Jan 24", "Ember and the Island of the Lost Creatures", "Jason Pamment", "Graphic Novel", "gr 3-7", "2023", "https://www.worldofbooks.com/cdn/shop/files/0063065207.jpg?v=1751036769"),
     new Book("Jan 24", "A Sky of Paper Stars", "Susie Yi", "Graphic Novel", "gr 4-6", "2023", "https://www.worldofbooks.com/cdn/shop/files/1250843898.jpg?v=1750792713&width=493"),
@@ -183,30 +181,29 @@ break-inside: avoid;
 
     new Book("Dec 24", "I Must Betray You", "Ruta Sepetys", "Prose Novel", "YA", "2022", "https://m.media-amazon.com/images/I/81fIpXaJuVL._AC_UF1000,1000_QL80_.jpg"),
     new Book("Dec 24", "The Storyteller", "Aaron Starmer", "Prose Novel", "", "2016", "https://m.media-amazon.com/images/I/91pcp38rCkL._AC_UF1000,1000_QL80_.jpg")
-    ],
-            ],
-            [
-                2025,[]
-            ]
-        ]);
+    ];
         this.DisplayBooks = [];
+        this.CategorySelector = new Map(); //<string of Category>, <array of books>
+        this.AudienceSelector = new Map(); //<string of Audience>, <array of books>
+        //Initialize the page
         window.addEventListener('DOMContentLoaded', () => {
- this.Books.get(2024).forEach((x) => {
-            this.DisplayBooks.push(x);
+            this.Books.forEach((x) => {
+                this.DisplayBooks.push(x);
+            });
+            document.getElementById('BooksListDisplay').replaceChildren();
+            this.DisplayBooks.forEach((book) => {
+                const bookCard = document.createElement('book-card');
+                bookCard.setAttribute('month', book.Month);
+                bookCard.setAttribute('title', book.Title);
+                bookCard.setAttribute('author', book.Author);
+                bookCard.setAttribute('category', book.Category);
+                bookCard.setAttribute('audience', book.Audience);
+                bookCard.setAttribute('publishyear', book.PublishYear);
+                bookCard.setAttribute('url', book.URL);
+                document.getElementById('BooksListDisplay').appendChild(bookCard);
+            });
+            customElements.define('book-card', BookCard);
         });
-        this.DisplayBooks.forEach((book) => {
-            const bookCard = document.createElement('book-card');
-            bookCard.setAttribute('month', book.Month);
-            bookCard.setAttribute('title', book.Title);
-            bookCard.setAttribute('author', book.Author);
-            bookCard.setAttribute('category', book.Category);
-            bookCard.setAttribute('audience', book.Audience);
-            bookCard.setAttribute('publishyear', book.PublishYear);
-            bookCard.setAttribute('url', book.URL);
-            document.getElementById('BooksListDisplay').appendChild(bookCard);
-        });
-        customElements.define('book-card', BookCard);
-});
     </script>
 </head>
 <style>
