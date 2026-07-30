@@ -11,7 +11,7 @@
                 this.updateContent();
             }
             static get observedAttributes(){
-                return ['month', 'title', 'author', 'category', 'audience', 'publishyear', 'url'];
+                return ['month', 'title', 'author', 'genre', 'audience', 'publishyear', 'url'];
             }
             attributeChangedCallback(name, oldValue, newValue){
                 this.updateContent();
@@ -79,23 +79,24 @@ break-inside: avoid;
         <div class="book__description">
           <p><b>${this.getAttribute('title')}</b></p>
           <p>by ${this.getAttribute('author')}</p>
+          <p>Published: ${this.getAttribute('publishyear')}</p>
         </div>
       </div>
     </div>`;
             }
         }
         class Book {
-            constructor(Month,Title, Author, Category, Audience, PublishYear, url="") {
+            constructor(Month,Title, Author, Genre, Audience, PublishYear, url="") {
                 this.Month = Month;
                 this.Title = Title;
                 this.Author = Author;
-                this.Category = Category;// Array of strings
+                this.Genre = Genre;
                 this.Audience = Audience;
                 this.PublishYear = PublishYear;
                 this.URL = url;
             }
         }
-        //Map or <year>, <array of books>
+
         this.Books = [
     new Book("Jan 24", "Tegan and Sarah: Junior High", "Tegan & Sarah Quin, Tillie Walden", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/0374313024.jpg?v=1751038977"),
     new Book("Jan 24", "Ember and the Island of the Lost Creatures", "Jason Pamment", "Graphic Novel", "gr 3-7", "2023", "https://www.worldofbooks.com/cdn/shop/files/0063065207.jpg?v=1751036769"),
@@ -183,7 +184,7 @@ break-inside: avoid;
     new Book("Dec 24", "The Storyteller", "Aaron Starmer", "Prose Novel", "", "2016", "https://m.media-amazon.com/images/I/91pcp38rCkL._AC_UF1000,1000_QL80_.jpg")
     ];
         this.DisplayBooks = [];
-        this.CategorySelector = new Map(); //<string of Category>, <array of books>
+        this.GenreSelector = new Map(); //<string of Genre>, <array of books>
         this.AudienceSelector = new Map(); //<string of Audience>, <array of books>
         //Initialize the page
         window.addEventListener('DOMContentLoaded', () => {
@@ -196,7 +197,7 @@ break-inside: avoid;
                 bookCard.setAttribute('month', book.Month);
                 bookCard.setAttribute('title', book.Title);
                 bookCard.setAttribute('author', book.Author);
-                bookCard.setAttribute('category', book.Category);
+                bookCard.setAttribute('genre', book.Genre);
                 bookCard.setAttribute('audience', book.Audience);
                 bookCard.setAttribute('publishyear', book.PublishYear);
                 bookCard.setAttribute('url', book.URL);
