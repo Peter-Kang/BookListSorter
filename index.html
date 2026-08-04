@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Book List Sorter</title>
     <script>
         //=====================================================================
@@ -198,7 +198,7 @@ break-inside: avoid;
                 super();
                 this.attachShadow({mode: 'open'});
             }
-            connectedCallback(){
+            async connectedCallback(){
                 this.updateContent();
             }
             static get observedAttributes(){
@@ -209,9 +209,38 @@ break-inside: avoid;
             }
             updateContent(){
                 const baseInnerHTML= [`
-                    <input type="radio" id="All" name="audience" value="0" checked> 
-                        <label for="All">All</label> 
-                    </input>`];
+                <style>
+                    label {
+                        height: auto;
+                        border-radius: 20px;
+                        padding: 0.5rem;
+                        text-align: center;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                        position: relative;
+                        margin: 5px;
+                    }
+                    /*Label on hover*/
+                    label:hover
+                    {
+                        color: yellowgreen;
+                    }
+                    input[type="radio"] {
+                        display: none;
+                        &:not(:disabled) ~ label {
+                            cursor: pointer;
+                        }
+                    }
+                    /*Radio Button clicked
+                    */
+                    input[type="radio"]:checked + label {
+                        color: white;
+                        background: black;
+                        box-shadow: 0 4px 8px 0 whitesmoke;
+                    }
+                </style>
+                <input type="radio" id="All" name="audience" value="0" checked> 
+                    <label for="All"><slot name="icon"></slot>All</label> 
+                </input>`];
                 this.getAttribute('audience').split(',').filter(Boolean).map((audience) => {
                     baseInnerHTML.push(
                         `<input type="radio" id="${audience}" name="audience" value="${audience}"> 
@@ -221,6 +250,34 @@ break-inside: avoid;
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
             }
         }
+        class FormatSelectorRadio extends HTMLElement {
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+            connectedCallback(){
+                this.updateContent();
+            }
+            static get observedAttributes(){
+                return ['format'];
+            }
+            attributeChangedCallback(name, oldValue, newValue){
+                this.updateContent();
+            }
+            updateContent(){
+                const baseInnerHTML= [`
+                    <input type="radio" id="All" name="format" value="0" checked>
+                        <label for="All"><i class="fa-solid fa-paw"></i>All</label> 
+                    </input>`]
+                this.getAttribute('format').split(',').filter(Boolean).map((format) => {
+                    baseInnerHTML.push(
+                        `<input type="radio" id="${format}" name="format" value="${format}"> 
+                            <label for="${format}">${format}</label> 
+                        </input>`);
+                    })
+                this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
+            }
+        }    
         class GenreSelectorCheckboxes extends HTMLElement {
             constructor(){
                 super();
@@ -249,34 +306,7 @@ break-inside: avoid;
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
             }
         }
-        class FormatSelectorRadio extends HTMLElement {
-            constructor(){
-                super();
-                this.attachShadow({mode: 'open'});
-            }
-            connectedCallback(){
-                this.updateContent();
-            }
-            static get observedAttributes(){
-                return ['format'];
-            }
-            attributeChangedCallback(name, oldValue, newValue){
-                this.updateContent();
-            }
-            updateContent(){
-                const baseInnerHTML= [`
-                    <input type="radio" id="All" name="format" value="0" checked> 
-                        <label for="All">All</label> 
-                    </input>`]
-                this.getAttribute('format').split(',').filter(Boolean).map((format) => {
-                    baseInnerHTML.push(
-                        `<input type="radio" id="${format}" name="format" value="${format}"> 
-                            <label for="${format}">${format}</label> 
-                        </input>`);
-                    })
-                this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
-            }
-        }
+        
         //=====================================================================
         //Initialize the page
         //=====================================================================
@@ -305,14 +335,17 @@ break-inside: avoid;
             //Selectors
             const audienceSelector = document.createElement('audience-selector');
             audienceSelector.setAttribute('audience', [...this.AudienceSelector]);
+            audienceSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('AudienceSelector').appendChild(audienceSelector);
 
             const genreSelector = document.createElement('genre-selector');
             genreSelector.setAttribute('genre', [...this.GenreSelector]);
+            genreSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('GenreSelector').appendChild(genreSelector);
 
             const formatSelector = document.createElement('format-selector');
             formatSelector.setAttribute('format', [...this.FormatSelector]);
+            formatSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('FormatSelector').appendChild(formatSelector);
 
             //Element Classes
@@ -331,6 +364,15 @@ break-inside: avoid;
 .bookList-selectors{
     margin: 1em;
 }
+.selector{
+    display: block;
+    margin: 1em;
+}
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
 <body style="text-align: center;">
     <header>
@@ -340,9 +382,9 @@ break-inside: avoid;
     <main>
         <div>
             <div id="BookListSelectors" class="bookList-selectors">
-                <div id="AudienceSelector"></div>
-                <div id="GenreSelector"></div>
-                <div id="FormatSelector"></div>
+                <div class="row">Audience: <div id="AudienceSelector" class="selector"></div></div>
+                <div class="row">Genre: <div id="GenreSelector" class="selector"></div></div>
+                <div class="row">Format: <div id="FormatSelector" class="selector"></div></div>
             </div>
             <div id="BooksListDisplay" class="grid-container"></div>
         </div>
