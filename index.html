@@ -200,6 +200,13 @@ break-inside: avoid;
             }
             async connectedCallback(){
                 this.updateContent();
+                // Move icon to whichever radio is selected
+                this.shadowRoot.addEventListener('change', (e) => {
+                    if (e.target.name === 'audience') {
+                        const icon = this.querySelector('[slot^="icon-"]');
+                        if (icon) icon.setAttribute('slot', `icon-${e.target.value}`);
+                    }
+                });
             }
             static get observedAttributes(){
                 return ['audience'];
@@ -237,14 +244,22 @@ break-inside: avoid;
                         background: black;
                         box-shadow: 0 4px 8px 0 whitesmoke;
                     }
+                    /* Hide the icon slot by default */
+                    slot[name="icon"] {
+                    display: none;
+                    }
+                    /* Show it only when the radio is checked */
+                    input[type="radio"]:checked ~ label slot[name="icon"] {
+                    display: inline-block;
+                    }
                 </style>
-                <input type="radio" id="All" name="audience" value="0" checked> 
-                    <label for="All"><slot name="icon"></slot>All</label> 
+                <input type="radio" id="All" name="audience" value="All" checked> 
+                    <label for="All"><slot name="icon-All"></slot>All</label> 
                 </input>`];
                 this.getAttribute('audience').split(',').filter(Boolean).map((audience) => {
                     baseInnerHTML.push(
                         `<input type="radio" id="${audience}" name="audience" value="${audience}"> 
-                            <label for="${audience}">${audience}</label> 
+                            <label for="${audience}"><slot name="icon-${audience}"></slot>${audience}</label> 
                         </input>`);
                     });
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
@@ -266,13 +281,13 @@ break-inside: avoid;
             }
             updateContent(){
                 const baseInnerHTML= [`
-                    <input type="radio" id="All" name="format" value="0" checked>
-                        <label for="All"><i class="fa-solid fa-paw"></i>All</label> 
+                    <input type="radio" id="All" name="format" value="All" checked>
+                        <label for="All"><slot name="icon"></slot>All</label> 
                     </input>`]
                 this.getAttribute('format').split(',').filter(Boolean).map((format) => {
                     baseInnerHTML.push(
                         `<input type="radio" id="${format}" name="format" value="${format}"> 
-                            <label for="${format}">${format}</label> 
+                            <label for="${format}"> <slot name="icon"></slot>${format}</label> 
                         </input>`);
                     })
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
@@ -335,7 +350,7 @@ break-inside: avoid;
             //Selectors
             const audienceSelector = document.createElement('audience-selector');
             audienceSelector.setAttribute('audience', [...this.AudienceSelector]);
-            audienceSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
+            audienceSelector.innerHTML = `<i slot="icon-All" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('AudienceSelector').appendChild(audienceSelector);
 
             const genreSelector = document.createElement('genre-selector');
