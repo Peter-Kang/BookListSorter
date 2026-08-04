@@ -2,6 +2,9 @@
 <head>
     <title>Book List Sorter</title>
     <script>
+        //=====================================================================
+        // Books
+        //=====================================================================
         class BookCard extends HTMLElement{
             constructor(){
                 super();
@@ -11,7 +14,7 @@
                 this.updateContent();
             }
             static get observedAttributes(){
-                return ['month', 'title', 'author', 'genre', 'audience', 'publishyear', 'url'];
+                return ['month', 'title', 'author', 'genre', 'audience', 'format', 'publishyear', 'url'];
             }
             attributeChangedCallback(name, oldValue, newValue){
                 this.updateContent();
@@ -79,14 +82,13 @@ break-inside: avoid;
         <div class="book__description">
           <p><b>${this.getAttribute('title')}</b></p>
           <p>by ${this.getAttribute('author')}</p>
-          <p>Published: ${this.getAttribute('publishyear')}</p>
         </div>
       </div>
     </div>`;
             }
         }
         class Book {
-            constructor(Month,Title, Author, Genre, Audience, PublishYear, url="") {
+            constructor(Month,Title, Author, Genre, Audience, PublishYear, url="", Format="" ) {
                 this.Month = Month;
                 this.Title = Title;
                 this.Author = Author;
@@ -94,9 +96,9 @@ break-inside: avoid;
                 this.Audience = Audience;
                 this.PublishYear = PublishYear;
                 this.URL = url;
+                this.Format = Format;
             }
         }
-
         this.Books = [
     new Book("Jan 24", "Tegan and Sarah: Junior High", "Tegan & Sarah Quin, Tillie Walden", "Graphic Novel", "", "2023", "https://www.worldofbooks.com/cdn/shop/files/0374313024.jpg?v=1751038977"),
     new Book("Jan 24", "Ember and the Island of the Lost Creatures", "Jason Pamment", "Graphic Novel", "gr 3-7", "2023", "https://www.worldofbooks.com/cdn/shop/files/0063065207.jpg?v=1751036769"),
@@ -184,10 +186,101 @@ break-inside: avoid;
     new Book("Dec 24", "The Storyteller", "Aaron Starmer", "Prose Novel", "", "2016", "https://m.media-amazon.com/images/I/91pcp38rCkL._AC_UF1000,1000_QL80_.jpg")
     ];
         this.DisplayBooks = [];
-        this.GenreSelector = new Map(); //<string of Genre>, <array of books>
-        this.AudienceSelector = new Map(); //<string of Audience>, <array of books>
+       //=====================================================================
+       // Selectors 
+       //=====================================================================
+        this.GenreSelector = new Set(); //<string of Genre>, <array of books>
+        this.AudienceSelector = new Set(); //<string of Audience>, <array of books>
+        this.FormatSelector = new Set(); //<string of Format>, <array of books>
+        class AudienceSelectorRadio extends HTMLElement {
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+            connectedCallback(){
+                this.updateContent();
+            }
+            static get observedAttributes(){
+                return ['audience'];
+            }
+            attributeChangedCallback(name, oldValue, newValue){
+                this.updateContent();
+            }
+            updateContent(){
+                const baseInnerHTML= [`
+                    <input type="radio" id="All" name="audience" value="0" checked> 
+                        <label for="All">All</label> 
+                    </input>`]
+                this.getAttribute('audience').split(',').map((audience) => {
+                    baseInnerHTML.push(
+                        `<input type="radio" id="${audience}" name="audience" value="${audience}"> 
+                            <label for="${audience}">${audience}</label> 
+                        </input>`);
+                    })
+                this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
+            }
+        }
+        class GenreSelectorCheckboxes extends HTMLElement {
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+            connectedCallback(){
+                this.updateContent();
+            }
+            static get observedAttributes(){
+                return ['genre'];
+            }
+            attributeChangedCallback(name, oldValue, newValue){
+                this.updateContent();
+            }
+            updateContent(){
+                const baseInnerHTML= [`
+                    <input type="radio" id="All" name="genre" value="0" checked> 
+                        <label for="All">All</label> 
+                    </input>`]
+                this.getAttribute('genre').split(',').map((genre) => {
+                    baseInnerHTML.push(
+                        `<input type="radio" id="${genre}" name="genre" value="${genre}"> 
+                            <label for="${genre}">${genre}</label> 
+                        </input>`);
+                    })
+                this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
+            }
+        }
+        class FormatSelectorRadio extends HTMLElement {
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+            connectedCallback(){
+                this.updateContent();
+            }
+            static get observedAttributes(){
+                return ['format'];
+            }
+            attributeChangedCallback(name, oldValue, newValue){
+                this.updateContent();
+            }
+            updateContent(){
+                const baseInnerHTML= [`
+                    <input type="radio" id="All" name="format" value="0" checked> 
+                        <label for="All">All</label> 
+                    </input>`]
+                this.getAttribute('format').split(',').map((format) => {
+                    baseInnerHTML.push(
+                        `<input type="radio" id="${format}" name="format" value="${format}"> 
+                            <label for="${format}">${format}</label> 
+                        </input>`);
+                    })
+                this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
+            }
+        }
+        //=====================================================================
         //Initialize the page
+        //=====================================================================
         window.addEventListener('DOMContentLoaded', () => {
+            //Books
             this.Books.forEach((x) => {
                 this.DisplayBooks.push(x);
             });
@@ -199,11 +292,33 @@ break-inside: avoid;
                 bookCard.setAttribute('author', book.Author);
                 bookCard.setAttribute('genre', book.Genre);
                 bookCard.setAttribute('audience', book.Audience);
+                bookCard.setAttribute('format', book.Format);
                 bookCard.setAttribute('publishyear', book.PublishYear);
                 bookCard.setAttribute('url', book.URL);
                 document.getElementById('BooksListDisplay').appendChild(bookCard);
+                book.Format !== "" ? this.FormatSelector.add(book.Format) : null;
+                book.Genre !== "" ? this.GenreSelector.add(book.Genre) : null;
+                book.Audience !== "" ? this.AudienceSelector.add(book.Audience) : null;
             });
+            
+            //Selectors
+            const audienceSelector = document.createElement('audience-selector');
+            audienceSelector.setAttribute('audience', [...this.AudienceSelector]);
+            document.getElementById('AudienceSelector').appendChild(audienceSelector);
+
+            const genreSelector = document.createElement('genre-selector');
+            genreSelector.setAttribute('genre', [...this.GenreSelector]);
+            document.getElementById('GenreSelector').appendChild(genreSelector);
+
+            const formatSelector = document.createElement('format-selector');
+            formatSelector.setAttribute('format', [...this.FormatSelector]);
+            document.getElementById('FormatSelector').appendChild(formatSelector);
+
+            //Element Classes
             customElements.define('book-card', BookCard);
+            customElements.define('audience-selector', AudienceSelectorRadio);
+            customElements.define('genre-selector', GenreSelectorCheckboxes);
+            customElements.define('format-selector', FormatSelectorRadio);
         });
     </script>
 </head>
@@ -211,6 +326,9 @@ break-inside: avoid;
     .grid-container {
   columns: 250px;
   column-gap: 1rem;
+}
+.bookList-selectors{
+    margin: 1em;
 }
 </style>
 <body style="text-align: center;">
@@ -220,7 +338,11 @@ break-inside: avoid;
     </header>
     <main>
         <div>
-            <div id="BookListYearSelector"></div>
+            <div id="BookListSelectors" class="bookList-selectors">
+                <div id="AudienceSelector"></div>
+                <div id="GenreSelector"></div>
+                <div id="FormatSelector"></div>
+            </div>
             <div id="BooksListDisplay" class="grid-container"></div>
         </div>
     </main>
