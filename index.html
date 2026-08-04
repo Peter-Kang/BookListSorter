@@ -211,13 +211,13 @@ break-inside: avoid;
                 const baseInnerHTML= [`
                     <input type="radio" id="All" name="audience" value="0" checked> 
                         <label for="All">All</label> 
-                    </input>`]
-                this.getAttribute('audience').split(',').map((audience) => {
+                    </input>`];
+                this.getAttribute('audience').split(',').filter(Boolean).map((audience) => {
                     baseInnerHTML.push(
                         `<input type="radio" id="${audience}" name="audience" value="${audience}"> 
                             <label for="${audience}">${audience}</label> 
                         </input>`);
-                    })
+                    });
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
             }
         }
@@ -240,12 +240,12 @@ break-inside: avoid;
                     <input type="radio" id="All" name="genre" value="0" checked> 
                         <label for="All">All</label> 
                     </input>`]
-                this.getAttribute('genre').split(',').map((genre) => {
-                    baseInnerHTML.push(
-                        `<input type="radio" id="${genre}" name="genre" value="${genre}"> 
-                            <label for="${genre}">${genre}</label> 
-                        </input>`);
-                    })
+                this.getAttribute('genre').split(',').filter(Boolean).map((genre) => {
+                        baseInnerHTML.push(
+                            `<input type="radio" id="${genre}" name="genre" value="${genre}"> 
+                                <label for="${genre}">${genre}</label> 
+                            </input>`);
+                        })
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
             }
         }
@@ -268,7 +268,7 @@ break-inside: avoid;
                     <input type="radio" id="All" name="format" value="0" checked> 
                         <label for="All">All</label> 
                     </input>`]
-                this.getAttribute('format').split(',').map((format) => {
+                this.getAttribute('format').split(',').filter(Boolean).map((format) => {
                     baseInnerHTML.push(
                         `<input type="radio" id="${format}" name="format" value="${format}"> 
                             <label for="${format}">${format}</label> 
