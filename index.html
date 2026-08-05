@@ -386,13 +386,13 @@ break-inside: avoid;
                     /*Radio Button clicked
                     */
                     input[type="radio"]:checked + label {
-                        color: #6E6EA6;
-                        background: #C0C0D8;
+                        color: #a8a243;
+                        background: #a86f43;
                         box-shadow: 0 4px 8px 0 whitesmoke;
                     }
                     /* Hide the icon slot by default */
                     slot[name="icon"] {
-                    display: none;
+                        display: none;
                     }
                     /* Show it only when the radio is checked */
                     input[type="radio"]:checked ~ label slot[name="icon"] {
@@ -450,7 +450,18 @@ break-inside: avoid;
 
             const genreSelector = document.createElement('genre-selector');
             genreSelector.setAttribute('genre', [...this.GenreSelector]);
-            genreSelector.innerHTML = `<i slot="icon-All" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
+            genreSelector.innerHTML = `<i slot="icon-All" style="display: inline-flex; justify-content: center; align-items: center;" >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#543f2f" stroke-linecap="round" stroke-linejoin="round" id="Snail--Streamline-Lucide" height="24" width="24">
+                    <desc>
+                        Snail Streamline Icon: https://streamlinehq.com
+                    </desc>
+                    <path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0 -8 0 2 2 0 0 0 4 0" stroke-width="2"></path>
+                    <path d="M2 13a8 8 0 1 0 16 0 8 8 0 1 0 -16 0" stroke-width="2"></path>
+                    <path d="M2 21h12c4.4 0 8 -3.6 8 -8V7a2 2 0 1 0 -4 0v6" stroke-width="2"></path>
+                    <path d="m18 3 1.1 2.2" stroke-width="2"></path>
+                    <path d="m22 3 -1.1 2.2" stroke-width="2"></path>
+                </svg>
+                </i>`;
             document.getElementById('GenreSelector').appendChild(genreSelector);
 
             //Element Classes
