@@ -270,26 +270,70 @@ break-inside: avoid;
                 super();
                 this.attachShadow({mode: 'open'});
             }
-            connectedCallback(){
+            async connectedCallback(){
                 this.updateContent();
+                // Move icon to whichever radio is selected
+                this.shadowRoot.addEventListener('change', (e) => {
+                    if (e.target.name === 'audience') {
+                        const icon = this.querySelector('[slot^="icon-"]');
+                        if (icon) icon.setAttribute('slot', `icon-${e.target.value}`);
+                    }
+                });
             }
             static get observedAttributes(){
-                return ['format'];
+                return ['Format'];
             }
             attributeChangedCallback(name, oldValue, newValue){
                 this.updateContent();
             }
             updateContent(){
                 const baseInnerHTML= [`
-                    <input type="radio" id="All" name="format" value="All" checked>
-                        <label for="All"><slot name="icon"></slot>All</label> 
-                    </input>`]
-                this.getAttribute('format').split(',').filter(Boolean).map((format) => {
+                <style>
+                    label {
+                        height: auto;
+                        border-radius: 20px;
+                        padding: 0.5rem;
+                        text-align: center;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                        position: relative;
+                        margin: 5px;
+                    }
+                    /*Label on hover*/
+                    label:hover
+                    {
+                        color: yellowgreen;
+                    }
+                    input[type="radio"] {
+                        display: none;
+                        &:not(:disabled) ~ label {
+                            cursor: pointer;
+                        }
+                    }
+                    /*Radio Button clicked
+                    */
+                    input[type="radio"]:checked + label {
+                        color: white;
+                        background: black;
+                        box-shadow: 0 4px 8px 0 whitesmoke;
+                    }
+                    /* Hide the icon slot by default */
+                    slot[name="icon"] {
+                    display: none;
+                    }
+                    /* Show it only when the radio is checked */
+                    input[type="radio"]:checked ~ label slot[name="icon"] {
+                    display: inline-block;
+                    }
+                </style>
+                <input type="radio" id="All" name="Format" value="All" checked> 
+                    <label for="All"><slot name="icon-All"></slot>All</label> 
+                </input>`];
+                this.getAttribute('Format').split(',').filter(Boolean).map((Format) => {
                     baseInnerHTML.push(
-                        `<input type="radio" id="${format}" name="format" value="${format}"> 
-                            <label for="${format}"> <slot name="icon"></slot>${format}</label> 
+                        `<input type="radio" id="${Format}" name="Format" value="${Format}"> 
+                            <label for="${Format}"><slot name="icon-${Format}"></slot>${Format}</label> 
                         </input>`);
-                    })
+                    });
                 this.shadowRoot.innerHTML= baseInnerHTML.join('\n');
             }
         }    
@@ -355,12 +399,12 @@ break-inside: avoid;
 
             const genreSelector = document.createElement('genre-selector');
             genreSelector.setAttribute('genre', [...this.GenreSelector]);
-            genreSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
+            genreSelector.innerHTML = `<i slot="icon-All" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('GenreSelector').appendChild(genreSelector);
 
             const formatSelector = document.createElement('format-selector');
             formatSelector.setAttribute('format', [...this.FormatSelector]);
-            formatSelector.innerHTML = `<i slot="icon" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
+            formatSelector.innerHTML = `<i slot="icon-All" class="fa-solid fa-paw" style="color: hotpink;"></i>`;
             document.getElementById('FormatSelector').appendChild(formatSelector);
 
             //Element Classes
