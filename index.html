@@ -226,6 +226,7 @@ break-inside: avoid;
                         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
                         position: relative;
                         margin: 5px;
+                        display: flex;
                     }
                     /*Label on hover*/
                     label:hover
@@ -298,6 +299,7 @@ break-inside: avoid;
                         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
                         position: relative;
                         margin: 5px;
+                        display: flex;
                     }
                     /*Label on hover*/
                     label:hover
@@ -371,6 +373,7 @@ break-inside: avoid;
                         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
                         position: relative;
                         margin: 5px;
+                        display: flex;
                     }
                     /*Label on hover*/
                     label:hover
@@ -450,7 +453,7 @@ break-inside: avoid;
 
             const genreSelector = document.createElement('genre-selector');
             genreSelector.setAttribute('genre', [...this.GenreSelector]);
-            genreSelector.innerHTML = `<i slot="icon-All" style="display: inline-flex; justify-content: center; align-items: center;" >
+            genreSelector.innerHTML = `<i slot="icon-All" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#543f2f" stroke-linecap="round" stroke-linejoin="round" id="Snail--Streamline-Lucide" height="24" width="24">
                     <desc>
                         Snail Streamline Icon: https://streamlinehq.com
@@ -488,6 +491,10 @@ break-inside: avoid;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+genre-selector, audience-selector, format-selector {
+    flex-flow: row wrap;
+    display: flex;
 }
 </style>
 <body style="text-align: center;">
