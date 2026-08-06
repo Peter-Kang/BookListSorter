@@ -206,8 +206,15 @@ break-inside: avoid;
                     if (e.target.name === 'audience') {
                         const icon = this.querySelector('[slot^="icon-"]');
                         if (icon) icon.setAttribute('slot', `icon-${e.target.value}`);
+                        //send the signal out
+                        this.dispatchEvent(new CustomEvent('selector-change', {
+                            detail: { type: 'audience', value: e.target.value },
+                            bubbles: true,
+                            composed: true
+                        }));
                     }
                 });
+                
             }
             static get observedAttributes(){
                 return ['audience'];
@@ -279,8 +286,15 @@ break-inside: avoid;
                     if (e.target.name === 'format') {
                         const icon = this.querySelector('[slot^="icon-"]');
                         if (icon) icon.setAttribute('slot', `icon-${e.target.value}`);
+                        //send the signal out
+                        this.dispatchEvent(new CustomEvent('selector-change', {
+                            detail: { type: 'format', value: e.target.value },
+                            bubbles: true,
+                            composed: true
+                        }));
                     }
                 });
+                
             }
             static get observedAttributes(){
                 return ['format'];
@@ -349,10 +363,15 @@ break-inside: avoid;
                 this.updateContent();
                 // Move icon to whichever radio is selected
                 this.shadowRoot.addEventListener('change', (e) => {
-                    console.log(e.target.name);
                     if (e.target.name === 'genre') {
                         const icon = this.querySelector('[slot^="icon-"]');
                         if (icon) icon.setAttribute('slot', `icon-${e.target.value}`);
+                        //send the signal out
+                        this.dispatchEvent(new CustomEvent('selector-change', {
+                            detail: { type: 'genre', value: e.target.value },
+                            bubbles: true,
+                            composed: true
+                        }));
                     }
                 });
             }
@@ -415,6 +434,9 @@ break-inside: avoid;
             }
         }
         
+
+        
+
         //=====================================================================
         //Initialize the page
         //=====================================================================
@@ -472,6 +494,48 @@ break-inside: avoid;
             customElements.define('audience-selector', AudienceSelectorRadio);
             customElements.define('genre-selector', GenreSelectorCheckboxes);
             customElements.define('format-selector', FormatSelectorRadio);
+
+
+            //=====================================================================
+            //functions to filter the books
+            //=====================================================================
+            function getSelectedValue(selectorId, name) {
+                const shadow = document.getElementById(selectorId)
+                    .querySelector(`${name}-selector`).shadowRoot;
+                return shadow.querySelector(`input[name="${name}"]:checked`)?.value ?? 'All';
+            }
+
+            function filterBooks() {
+                const genre = getSelectedValue('GenreSelector', 'genre');
+                const audience = getSelectedValue('AudienceSelector', 'audience');
+                const format = getSelectedValue('FormatSelector', 'format');
+
+                this.DisplayBooks = this.Books.filter(b =>
+                    (genre === 'All' || b.Genre === genre) &&
+                    (audience === 'All' || b.Audience === audience) &&
+                    (format === 'All' || b.Format === format)
+                );
+                // re-render BooksListDisplay from this.DisplayBooks
+                document.getElementById('BooksListDisplay').replaceChildren();
+                this.DisplayBooks.forEach((book) => {
+                const bookCard = document.createElement('book-card');
+                bookCard.setAttribute('month', book.Month);
+                bookCard.setAttribute('title', book.Title);
+                bookCard.setAttribute('author', book.Author);
+                bookCard.setAttribute('genre', book.Genre);
+                bookCard.setAttribute('audience', book.Audience);
+                bookCard.setAttribute('format', book.Format);
+                bookCard.setAttribute('publishyear', book.PublishYear);
+                bookCard.setAttribute('url', book.URL);
+                document.getElementById('BooksListDisplay').appendChild(bookCard);
+            });
+            }
+
+            document.getElementById('BookListSelectors').addEventListener('selector-change', (e) => {
+                const { type, value } = e.detail;
+                console.log(`${type} changed to ${value}`);
+                filterBooks(); // your future filtering logic reads current radio states
+            });
         });
     </script>
 </head>
